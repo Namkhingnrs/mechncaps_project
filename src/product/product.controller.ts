@@ -35,9 +35,7 @@ export class ProductController {
 
   @Get()
   @Public()
-  async findAll(
-    @Query() query: QueryProductDto,
-  ): Promise<{
+  async findAll(@Query() query: QueryProductDto): Promise<{
     products: ProductDto[];
     total: number;
     page: number;

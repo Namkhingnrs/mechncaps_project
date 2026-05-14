@@ -1,5 +1,5 @@
 import { IsNotEmpty, IsEnum } from 'class-validator';
-import { PaymentMethod } from 'database/generated/prisma/enums';
+import { PaymentMethod, PaymentStatus } from 'database/generated/prisma/enums';
 
 export class CreatePaymentDto {
   @IsNotEmpty()
@@ -12,6 +12,3 @@ export class UpdatePaymentStatusDto {
   @IsEnum(PaymentStatus)
   status!: PaymentStatus;
 }
-
-// Import PaymentStatus for the DTO
-import { PaymentStatus } from 'database/generated/prisma/enums';

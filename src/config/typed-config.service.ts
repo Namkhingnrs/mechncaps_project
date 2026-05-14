@@ -7,9 +7,13 @@ export class TypedConfigService {
   constructor(private readonly configService: ConfigService) {}
 
   get env(): EnvConfig {
-    return validateEnv(
-      this.configService as unknown as Record<string, unknown>,
-    );
+    return validateEnv({
+      PORT: this.configService.get('PORT'),
+      DATABASE_URL: this.configService.get('DATABASE_URL'),
+      JWT_SECRET: this.configService.get('JWT_SECRET'),
+      JWT_EXPIRES_IN: this.configService.get('JWT_EXPIRES_IN'),
+      SALT_ROUNDS: this.configService.get('SALT_ROUNDS'),
+    });
   }
 
   get port(): number {

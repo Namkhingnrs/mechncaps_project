@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { TypedConfigService } from './config/typed-config.service';
-import { PrismaService } from './database/prisma.service';
+import { AppConfigModule } from './config/app-config.module';
+import { DatabaseModule } from './database/database.module';
 import { BcryptService } from './shared/security/services/bcrypt.service';
 import { AuthTokenService } from './shared/security/services/auth-token.service';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter';
@@ -36,13 +36,18 @@ import { PaymentModule } from './payment/payment.module';
         SALT_ROUNDS: parseInt(config.SALT_ROUNDS || '12', 10),
       }),
     }),
+    AppConfigModule,
+    DatabaseModule,
     JwtModule.registerAsync({
       global: true,
-      useFactory: (config: TypedConfigService) => ({
-        secret: config.jwtSecret,
-        signOptions: { expiresIn: config.jwtExpiresIn as any },
+      imports: [ConfigModule],
+      useFactory: (config: ConfigService) => ({
+        secret: config.getOrThrow<string>('JWT_SECRET'),
+        signOptions: {
+          expiresIn: (config.get<string>('JWT_EXPIRES_IN') || '1h') as any,
+        },
       }),
-      inject: [TypedConfigService],
+      inject: [ConfigService],
     }),
     PassportModule,
     UserModule,
@@ -57,8 +62,6 @@ import { PaymentModule } from './payment/payment.module';
   controllers: [AppController],
   providers: [
     AppService,
-    TypedConfigService,
-    PrismaService,
     BcryptService,
     AuthTokenService,
     JwtStrategy,

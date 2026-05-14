@@ -38,7 +38,7 @@ export class ProductService {
       id: product.id,
       name: product.name,
       description: product.description,
-      price: product.price,
+      price: Number(product.price),
       stock: product.stock,
       material: product.material,
       profile: product.profile,
@@ -51,9 +51,7 @@ export class ProductService {
     };
   }
 
-  async findAll(
-    query: QueryProductDto,
-  ): Promise<{
+  async findAll(query: QueryProductDto): Promise<{
     products: ProductDto[];
     total: number;
     page: number;
@@ -89,7 +87,7 @@ export class ProductService {
       id: product.id,
       name: product.name,
       description: product.description,
-      price: product.price,
+      price: Number(product.price),
       stock: product.stock,
       material: product.material,
       profile: product.profile,
@@ -128,7 +126,7 @@ export class ProductService {
       id: product.id,
       name: product.name,
       description: product.description,
-      price: product.price,
+      price: Number(product.price),
       stock: product.stock,
       material: product.material,
       profile: product.profile,
@@ -175,7 +173,7 @@ export class ProductService {
       id: product.id,
       name: product.name,
       description: product.description,
-      price: product.price,
+      price: Number(product.price),
       stock: product.stock,
       material: product.material,
       profile: product.profile,

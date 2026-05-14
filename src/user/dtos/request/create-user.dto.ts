@@ -4,16 +4,16 @@ import { Transform } from 'class-transformer';
 export class CreateUserDto {
   @IsNotEmpty()
   @IsString()
-  @Transform(({ value }) => value?.trim())
-  username: string;
+  @Transform(({ value }: { value: string }) => value?.trim())
+  username!: string;
 
   @IsNotEmpty()
   @IsEmail()
-  @Transform(({ value }) => value?.toLowerCase().trim())
-  email: string;
+  @Transform(({ value }: { value: string }) => value?.toLowerCase().trim())
+  email!: string;
 
   @IsNotEmpty()
   @IsString()
   @MinLength(6)
-  password: string;
+  password!: string;
 }

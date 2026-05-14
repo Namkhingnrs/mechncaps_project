@@ -33,6 +33,10 @@ export class PaymentService {
       throw new NotFoundException('Order not found');
     }
 
+    if (order.status !== OrderStatus.PENDING_PAYMENT) {
+      throw new BadRequestException('Order is not awaiting payment');
+    }
+
     // Check if payment already exists for this order
     const existingPayment = await this.prisma.payment.findUnique({
       where: { orderId },
@@ -126,6 +130,13 @@ export class PaymentService {
       await this.prisma.order.update({
         where: { id: orderId },
         data: { status: OrderStatus.WAITING_VERIFICATION },
+      });
+    }
+
+    if (updatePaymentStatusDto.status === PaymentStatus.FAILED) {
+      await this.prisma.order.update({
+        where: { id: orderId },
+        data: { status: OrderStatus.CANCELLED },
       });
     }
 
