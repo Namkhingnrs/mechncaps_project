@@ -95,6 +95,12 @@ export class UpdateProductDto {
 
 export class QueryProductDto {
   @IsOptional()
+  @Transform(({ value }: { value: unknown }) => {
+    if (typeof value === 'string') {
+      return parseInt(value, 10);
+    }
+    return value;
+  })
   @IsInt()
   @Min(1)
   page?: number = 1;
@@ -111,6 +117,12 @@ export class QueryProductDto {
   limit?: number = 10;
 
   @IsOptional()
+  @Transform(({ value }: { value: unknown }) => {
+    if (typeof value === 'string') {
+      return parseInt(value, 10);
+    }
+    return value;
+  })
   @IsInt()
   categoryId?: number;
 
